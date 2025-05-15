@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Личный кабинет | NeoCinema</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: radial-gradient(#0a0a1a, #000);
+      color: white;
+      padding: 2rem;
+    }
+    .neon {
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="text-4xl font-bold mb-6 neon">👤 Личный кабинет</h1>
+
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-cyan-400">📊 Статистика просмотров фильмов</h2>
+    <div id="viewsList" class="space-y-2 text-white"></div>
+  </section>
+
+  <a href="index.html" class="inline-block bg-cyan-500 hover:bg-cyan-700 text-black font-semibold py-2 px-4 rounded">← Назад на главную</a>
+
+  <script>
+    // Показать список всех фильмов с количеством просмотров
+    const viewsList = document.getElementById('viewsList');
+    const allKeys = Object.keys(localStorage).filter(key => key.startsWith('neoViews_'));
+
+    if (allKeys.length === 0) {
+      viewsList.innerHTML = '<p class="text-gray-400">Нет данных о просмотрах.</p>';
+    } else {
+      allKeys.forEach(key => {
+        const movieId = key.replace('neoViews_', '');
+        const count = localStorage.getItem(key);
+        const div = document.createElement('div');
+        div.className = "bg-zinc-800 p-4 rounded shadow";
+        div.innerText = `Фильм ID: ${movieId} — ${count} просмотров`;
+        viewsList.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

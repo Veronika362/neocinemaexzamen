@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Личный кабинет | NeoCinema</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse at center, #0a0a1a 0%, #000000 100%),
+        url('https://www.transparenttextures.com/patterns/stardust.png');
+      z-index: -2;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 30px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 40px cyan;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px 0;
+      box-shadow: 0 0 20px cyan;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: cyan;
+      text-shadow: 0 0 10px cyan;
+    }
+
+    .btn {
+      background: cyan;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+      box-shadow: 0 0 10px cyan;
+    }
+
+    .btn:hover {
+      background: #00ffff;
+      box-shadow: 0 0 20px cyan;
+    }
+
+    .btn-logout {
+      background: #ff0066;
+      color: white;
+      box-shadow: 0 0 10px #ff0066;
+    }
+
+    .btn-logout:hover {
+      background: #ff0066;
+      box-shadow: 0 0 20px #ff0066;
+    }
+
+    h1 {
+      color: cyan;
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px cyan;
+    }
+
+    .profile-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      background: rgba(20, 20, 40, 0.7);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid cyan;
+      box-shadow: 0 0 15px cyan;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid cyan;
+      object-fit: cover;
+      margin-right: 20px;
+      box-shadow: 0 0 15px cyan;
+    }
+
+    .profile-info h2 {
+      color: cyan;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .change-avatar {
+      color: cyan;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+
+    .section {
+      background: rgba(20, 20, 40, 0.7);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid cyan;
+      box-shadow: 0 0 15px cyan;
+    }
+
+    .section-title {
+      color: cyan;
+      font-size: 24px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .movie-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .movie-item {
+      background: rgba(30, 30, 60, 0.5);
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .movie-item:hover {
+      background: rgba(30, 30, 60, 0.8);
+      transform: translateX(5px);
+      box-shadow: 0 0 10px cyan;
+    }
+
+    .movie-poster {
+      width: 60px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 15px;
+      border: 1px solid cyan;
+    }
+
+    .movie-info h3 {
+      color: cyan;
+      margin: 0 0 5px 0;
+    }
+
+    .movie-info p {
+      color: #aaa;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .empty-list {
+      color: #666;
+      font-style: italic;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .achievement-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: rgba(30, 30, 60, 0.5);
+      border-radius: 10px;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .achievement-icon {
+      font-size: 24px;
+      margin-right: 10px;
+      color: cyan;
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .settings-item:last-child {
+      border-bottom: none;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #333;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: cyan;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(30px);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: rgba(10, 10, 30, 0.9);
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 500px;
+      border: 2px solid cyan;
+      box-shadow: 0 0 30px cyan;
+      position: relative;
+    }
+
+    .close {
+      color: cyan;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #00ffff;
+    }
+
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .avatar-option {
+      width: 100%;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .avatar-option:hover {
+      transform: scale(1.1);
+      border-color: cyan;
+      box-shadow: 0 0 15px cyan;
+    }
+
+    .upload-avatar {
+      margin-top: 20px;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(20, 20, 40, 0.9);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid cyan;
+      box-shadow: 0 0 15px cyan;
+      z-index: 1000;
+      transform: translateX(200%);
+      transition: transform 0.3s ease;
+      max-width: 90%;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    /* Адаптивные стили */
+    @media (max-width: 1200px) {
+      .container {
+        margin: 80px 20px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .header-content {
+        flex-wrap: wrap;
+      }
+      
+      .logo {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      .btn {
+        margin: 5px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 70px 15px;
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 30px;
+        margin-bottom: 20px;
+      }
+      
+      .profile-section {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+      
+      .movie-item {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .movie-poster {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      
+      .section-title {
+        font-size: 22px;
+      }
+      
+      .modal-content {
+        margin: 15% auto;
+      }
+      
+      .avatar-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        margin: 60px 10px;
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 26px;
+      }
+      
+      .header-content {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        margin: 5px 0;
+      }
+      
+      .profile-info h2 {
+        font-size: 22px;
+      }
+      
+      .section-title {
+        font-size: 20px;
+      }
+      
+      .movie-info h3 {
+        font-size: 18px;
+      }
+      
+      .movie-info p {
+        font-size: 13px;
+      }
+      
+      .modal-content {
+        margin: 20% auto;
+        padding: 15px;
+      }
+      
+      .avatar-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .settings-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .switch {
+        margin-top: 10px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        margin: 50px 5px;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+      
+      .avatar {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .movie-poster {
+        width: 50px;
+        height: 75px;
+      }
+      
+      .section {
+        padding: 15px;
+      }
+    }
+body.light-theme {
+  background: #f0f8ff;
+  color: #333;
+}
+
+body.light-theme .stars {
+  background: radial-gradient(ellipse at center, #f0f8ff 0%, #d1e0ff 100%);
+}
+
+body.light-theme .container,
+body.light-theme .profile-section,
+body.light-theme .section,
+body.light-theme .movie-item,
+body.light-theme .achievement-item {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .movie-info p,
+body.light-theme .empty-list {
+  color: #666;
+}
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  
+  <header>
+    <div class="header-content">
+      <div class="logo">NEO<span style="color: #ff0066;">CINEMA</span></div>
+      <div>
+        <a href="index.html" class="btn">← Главная</a>
+        <button onclick="logout()" class="btn btn-logout">Выйти</button>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <h1>ЛИЧНЫЙ КАБИНЕТ</h1>
+    
+    <div class="profile-section">
+      <img id="profileAvatar" src="default-avatar.png" alt="Аватар" class="avatar">
+      <div class="profile-info">
+        <h2 id="profileName">Имя пользователя</h2>
+        <span onclick="openAvatarModal()" class="change-avatar">Сменить аватар</span>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">⭐ ИЗБРАННОЕ</div>
+      <ul id="favoritesList" class="movie-list">
+        <li class="empty-list">Пока ничего нет</li>
+      </ul>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">⏳ СМОТРЕТЬ ПОЗЖЕ</div>
+      <ul id="watchLaterList" class="movie-list">
+        <li class="empty-list">Пока ничего нет</li>
+      </ul>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">🏆 АЧИВКИ</div>
+      <ul id="achievementsList" class="movie-list">
+        <li class="empty-list">Пока нет ачивок</li>
+      </ul>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">📊 ИСТОРИЯ ПРОСМОТРОВ</div>
+      <ul id="viewStats" class="movie-list">
+        <li class="empty-list">Нет данных о просмотрах</li>
+      </ul>
+    </div>
+    <div class="section fade-in">
+  <div class="section-title">📈 Статистика просмотров</div>
+  <canvas id="viewsChart" height="200"></canvas>
+</div>
+    <div class="section">
+      <div class="section-title">⚙ НАСТРОЙКИ</div>
+      <div class="settings-item">
+        <span>Тёмная тема</span>
+        <label class="switch">
+          <input type="checkbox" id="themeToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-item">
+        <span>Уведомления</span>
+        <label class="switch">
+          <input type="checkbox" id="notifToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Модальное окно смены аватара -->
+  <div id="avatarModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeAvatarModal()">&times;</span>
+      <h2>Выберите аватар</h2>
+      <div class="avatar-grid">
+        <img src="1600w-Gfcd-jH2ftc.webp" onclick="selectAvatar('1600w-Gfcd-jH2ftc.webp')" class="avatar-option">
+        <img src="wonder-day-steam-avatar-14.jpg" onclick="selectAvatar('wonder-day-steam-avatar-14.jpg')" class="avatar-option">
+        <img src="Без названия.jpeg" onclick="selectAvatar('Без названия.jpeg')" class="avatar-option">
+        <img src="Без названия (1).jpeg" onclick="selectAvatar('Без названия (1).jpeg')" class="avatar-option">
+        <img src="avatar5.png" onclick="selectAvatar('avatar5.png')" class="avatar-option">
+        <img src="avatar6.png" onclick="selectAvatar('avatar6.png')" class="avatar-option">
+      </div>
+      <div class="upload-avatar">
+        <p>Или загрузите свой аватар:</p>
+        <input type="file" id="customAvatarInput" accept="image/*">
+        <button onclick="uploadCustomAvatar()" class="btn">Загрузить</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Модальное окно отзыва -->
+  <div id="reviewModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeReviewModal()">&times;</span>
+      <h2 id="reviewTitle">Оставить отзыв</h2>
+      <textarea id="reviewText" placeholder="Напишите ваш отзыв..." rows="5" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid cyan; color: white; border-radius: 5px;"></textarea>
+      <div style="margin: 15px 0;">
+        <label>Оценка (1-10):</label>
+        <input type="number" id="reviewRating" min="1" max="10" style="width: 60px; margin-left: 10px; padding: 5px; background: rgba(0,0,0,0.5); border: 1px solid cyan; color: white; border-radius: 5px;">
+      </div>
+      <button onclick="saveReview()" class="btn">Сохранить отзыв</button>
+    </div>
+  </div>
+
+  <script>
+    const avatarImg = document.getElementById("profileAvatar");
+    const notifToggle = document.getElementById("notifToggle");
+let themeToggle = document.getElementById("themeToggle");
+    let currentReviewId = null;
+
+    // Загрузка данных при открытии страницы
+    document.addEventListener("DOMContentLoaded", () => {
+      // Загрузка данных пользователя
+      const name = localStorage.getItem("neoUsername") || "Имя пользователя";
+      const avatar = localStorage.getItem("neoAvatarURL") || "default-avatar.png";
+      document.getElementById("profileName").textContent = name;
+      avatarImg.src = avatar;
+
+      // Настройки темы
+      const isDark = localStorage.getItem("neoTheme") !== "light";
+      themeToggle.checked = isDark;
+      document.body.classList.toggle("light-theme", !isDark);
+
+      // Настройки уведомлений
+      const notifEnabled = localStorage.getItem("neoNotif") !== "off";
+      notifToggle.checked = notifEnabled;
+
+      // Загрузка списков
+      renderList("neoFavorites", "favoritesList");
+      renderList("neoWatchLater", "watchLaterList");
+      renderHistory();
+      renderAchievements();
+    });
+
+    // Обработчики переключателей
+// Обработчики переключателей
+if (themeToggle) {
+  themeToggle.addEventListener("change", () => {
+    const isDark = themeToggle.checked;
+    document.body.classList.toggle("light-theme", !isDark);
+    localStorage.setItem("neoTheme", isDark ? "dark" : "light");
+    
+    // Обновляем фон для элементов с классом stars
+    const stars = document.querySelector('.stars');
+    if (stars) {
+      stars.style.background = isDark 
+        ? 'radial-gradient(ellipse at center, #0a0a1a 0%, #000000 100%), url("https://www.transparenttextures.com/patterns/stardust.png")'
+        : 'radial-gradient(ellipse at center, #f0f8ff 0%, #d1e0ff 100%)';
+    }
+  });
+}
+
+notifToggle.addEventListener("change", () => {
+  const isEnabled = notifToggle.checked;
+  localStorage.setItem("neoNotif", isEnabled ? "on" : "off");
+});    // Выход из аккаунта
+    function logout() {
+      localStorage.removeItem("neoUser");
+      location.href = "login.html";
+    }
+
+    // Работа с аватаром
+    function openAvatarModal() {
+      document.getElementById("avatarModal").style.display = "block";
+    }
+
+    function closeAvatarModal() {
+      document.getElementById("avatarModal").style.display = "none";
+    }
+
+    function selectAvatar(src) {
+      localStorage.setItem("neoAvatarURL", src);
+      avatarImg.src = src;
+      closeAvatarModal();
+      showNotification("Аватар успешно изменён!");
+    }
+
+    function uploadCustomAvatar() {
+      const file = document.getElementById("customAvatarInput").files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          localStorage.setItem("neoAvatarURL", e.target.result);
+          avatarImg.src = e.target.result;
+          closeAvatarModal();
+          showNotification("Аватар успешно загружен!");
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Работа с отзывами
+    function openReviewModal(id, title) {
+      currentReviewId = id;
+      document.getElementById("reviewModal").style.display = "block";
+      document.getElementById("reviewTitle").textContent = `Отзыв на фильм "${title}"`;
+      
+      const reviews = JSON.parse(localStorage.getItem("neoReviews")) || {};
+      if (reviews[id]) {
+        document.getElementById("reviewText").value = reviews[id].text || "";
+        document.getElementById("reviewRating").value = reviews[id].rating || "";
+      }
+    }
+
+    function closeReviewModal() {
+      document.getElementById("reviewModal").style.display = "none";
+    }
+
+    function saveReview() {
+      const reviews = JSON.parse(localStorage.getItem("neoReviews")) || {};
+      reviews[currentReviewId] = {
+        text: document.getElementById("reviewText").value,
+        rating: document.getElementById("reviewRating").value
+      };
+      localStorage.setItem("neoReviews", JSON.stringify(reviews));
+      closeReviewModal();
+      renderHistory();
+      showNotification("Отзыв успешно сохранён!");
+    }
+
+    // Отображение списков (избранное и смотреть позже)
+    function renderList(key, containerId) {
+      const list = JSON.parse(localStorage.getItem(key)) || [];
+      const container = document.getElementById(containerId);
+      
+      if (list.length === 0) {
+        container.innerHTML = '<li class="empty-list">Пока ничего нет</li>';
+        return;
+      }
+      
+      container.innerHTML = list.map(item => `
+        <li class="movie-item">
+          <div class="movie-info">
+            <h3>${item}</h3>
+          </div>
+        </li>
+      `).join("");
+    }
+
+    // Отображение истории просмотров
+    function renderHistory() {
+      const stats = JSON.parse(localStorage.getItem("neoViewStats")) || {};
+      const reviews = JSON.parse(localStorage.getItem("neoReviews")) || {};
+      const container = document.getElementById("viewStats");
+      
+      if (Object.keys(stats).length === 0) {
+        container.innerHTML = '<li class="empty-list">Нет данных о просмотрах</li>';
+        return;
+      }
+      
+      container.innerHTML = Object.entries(stats).map(([id, film]) => `
+        <li class="movie-item">
+          <img src="${film.poster}" class="movie-poster" alt="${film.title}">
+          <div class="movie-info">
+            <h3>${film.title}</h3>
+            <p>Просмотров: ${film.count} | ${reviews[id] ? `Оценка: ${'★'.repeat(reviews[id].rating)}` : 'Без оценки'}</p>
+            <p>${reviews[id]?.text || 'Отзыв не оставлен'}</p>
+            <button onclick="openReviewModal('${id}', '${film.title}')" class="btn" style="padding: 5px 10px; margin-top: 5px; font-size: 12px;">
+              ${reviews[id] ? 'Изменить отзыв' : 'Оставить отзыв'}
+            </button>
+          </div>
+        </li>
+      `).join("");
+    }
+
+    // Отображение ачивок
+    function renderAchievements() {
+      const stats = JSON.parse(localStorage.getItem("neoViewStats")) || {};
+      const container = document.getElementById("achievementsList");
+      const totalViews = Object.values(stats).reduce((sum, film) => sum + film.count, 0);
+      
+      const achievs = [];
+      if (totalViews >= 1) achievs.push({icon: "🎬", text: "Первый просмотр!"});
+      if (totalViews >= 5) achievs.push({icon: "🏆", text: "Киноман: 5 просмотров"});
+      if (totalViews >= 10) achievs.push({icon: "🍿", text: "Зависимость: 10 просмотров"});
+      if (totalViews >= 20) achievs.push({icon: "🚀", text: "Киновселенная пройдена!"});
+      
+      if (achievs.length === 0) {
+        container.innerHTML = '<li class="empty-list">Пока нет ачивок</li>';
+        return;
+      }
+      
+      container.innerHTML = achievs.map(ach => `
+        <li class="achievement-item">
+          <span class="achievement-icon">${ach.icon}</span>
+          <span>${ach.text}</span>
+        </li>
+      `).join("");
+    }
+
+    // Всплывающие уведомления
+    function showNotification(message) {
+      if (localStorage.getItem("neoNotif") === "off") return;
+      
+      const notification = document.createElement("div");
+      notification.className = "notification";
+      notification.innerHTML = `
+        <div style="padding: 15px; border-radius: 10px; background: rgba(20,20,40,0.9); border: 1px solid cyan; box-shadow: 0 0 15px cyan;">
+          <p>${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add("show");
+        setTimeout(() => {
+          notification.classList.remove("show");
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }, 10);
+    }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // График статистики просмотров
+  const ctx = document.getElementById('viewsChart').getContext('2d');
+  const stats = JSON.parse(localStorage.getItem("neoViewStats")) || {};
+  
+  const labels = Object.keys(stats).map(id => stats[id].title);
+  const data = Object.keys(stats).map(id => stats[id].count);
+
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Количество просмотров',
+        data: data,
+        backgroundColor: 'rgba(0, 255, 255, 0.5)',
+        borderColor: 'rgba(0, 255, 255, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
